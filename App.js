@@ -1,165 +1,26 @@
-import React, { Component } from 'react';
-import { 
-    View, 
-    StatusBar, 
-    Text,Alert,
-    BackHandler, 
-    ImageBackground, 
-    ScrollView, 
-    Dimensions,
-    SafeAreaView,Image,ActivityIndicator
-} from 'react-native';
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import First_page from './src/Screens/index1';
+import Second_Page from './src/Screens/index2';
 
+const Stack = createStackNavigator();
 
+function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="First_page"
+          component={First_page}
+         
+        />
 
-import {connection} from "./src/networking/connection";
-import { getDataFromServer } from './src/networking/Server';
-import Swiper from 'react-native-swiper'
-import AsyncStorage from '@react-native-community/async-storage';
-
-
-
-const window = Dimensions.get('window');
-
-export default class AgendaPage extends Component {
-
-
-    
-    constructor(){
-        super()
-        this.state = {
-            data:[],
-            loading:false,
-            tracks:"",
-        }
-   }
-
-   async setTokan(response){
-        console.log("alert",JSON.stringify(response)) 
-        try{
-                let Imgurl = response[0]["thumbnailUrl"]
-
-                console.log("ImgURL",response[0]["thumbnailUrl"]);
-
-                await AsyncStorage.multiSet([['ImageUrl', Imgurl]])
-
-                // get data from  local stroge
-
-                let userEmail = await AsyncStorage.getItem('ImageUrl');
-
-                console.log("from local stroage",userEmail);
-
-
-        }catch(error){
-           console.log("error",error);
-        }
-   }
-
-    componentDidMount = () =>{
-
-      console.log("apple");
-        // BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
-        // this.setState({
-        //     loading:true
-        //   })
-
-          getDataFromServer('').then(response => {
-            console.log('response--->', response)
-            // Alert.alert("api_asia", response);
-            if (response === 404) {
-    
-              Alert.alert("api_asia", "Connection Error", "error");
-            } else {
-              // let Status = response["Error"];
-              let Message = response[0]["thumbnailUrl"];
-              this.setTokan(response) 
-              // let All = response[""];
-             console.log("Rana Response",JSON.stringify(Message));
-              this.setState({
-                data:response,
-                tracks: Message,
-                loading: true
-        })
-                console.log("State",this.state.data[0]["thumbnailUrl"]);
-                console.log("Singale Image",this.state.tracks);
-      
-              // this._getTablesFromApi();
-            }
-          });
-      
-    
-    }
-
-//     _getTracksFromApi = () => {
-
-//       getDataFromServer('articles').then(response => {
-//         console.log('response--->', response)
-//         // Alert.alert("api_asia", response);
-//         if (response === 404) {
-
-//           Alert.alert("api_asia", "Connection Error", "error");
-//         } else {
-//           // let Status = response["Error"];
-//           let Message = response["urlToImage"];
-//          console.log("Rana URL",Message);
-//           this.setState({
-//             tracks: Message,
-//           //   loading: false
-//     })
-//           this._getTablesFromApi();
-//         }
-//       });
-  
-// }
-
-    // handleBackButton = () => {
-    //     this.props.navigation.navigate('Home');
-    //     return true;
-    // } 
-
-    componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
-    }
-
-    render() {   
-        return (
-<View style={{flex:1}}>
-{this.state.loading == false &&
-<View>
-<ActivityIndicator size="small" color="#00ff00" />
-</View>
-
-    }
-    {this.state.loading == true &&
-<View>
-
-  <Text>123</Text>
-  <Image source={{uri: this.state.tracks}} style={{height:50,width:50}}/>
-</View>
-    }
-<Swiper 
-                                style={{ height: (window.height)*0.25}} 
-                                loadMinimal={true}
-                                showsPagination={false} 
-                                loop={true} autoplay={true} 
-                                autoplayTimeout={3}
-                            >
-                                {this.state.data.map((data, index) => {
-                                    return(
-                                        <View key={index} style={{justifyContent: 'center', alignItems: 'center',
-                                }}>
-                                  <Text>123</Text>
-                                            <Image style={{width: (window.width)*0.95, height: (window.height)*0.25, borderRadius: 10}} source={{uri: data.thumbnailUrl}}/>
-                                        </View>
-                                    )
-                                })}
-                            </Swiper>
-
-</View>
-        );  
-    }
-
-
-
-
+        <Stack.Screen name="Second_Page" component={Second_Page}  />
+        
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
+
+export default App;
