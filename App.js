@@ -15,6 +15,7 @@ import {
 import {connection} from "./src/networking/connection";
 import { getDataFromServer } from './src/networking/Server';
 import Swiper from 'react-native-swiper'
+import AsyncStorage from '@react-native-community/async-storage';
 
 
 
@@ -33,6 +34,26 @@ export default class AgendaPage extends Component {
         }
    }
 
+   async setTokan(response){
+        console.log("alert",JSON.stringify(response)) 
+        try{
+                let Imgurl = response[0]["thumbnailUrl"]
+
+                console.log("ImgURL",response[0]["thumbnailUrl"]);
+
+                await AsyncStorage.multiSet([['ImageUrl', Imgurl]])
+
+                // get data from  local stroge
+
+                let userEmail = await AsyncStorage.getItem('ImageUrl');
+
+                console.log("from local stroage",userEmail);
+
+
+        }catch(error){
+           console.log("error",error);
+        }
+   }
 
     componentDidMount = () =>{
 
@@ -51,6 +72,7 @@ export default class AgendaPage extends Component {
             } else {
               // let Status = response["Error"];
               let Message = response[0]["thumbnailUrl"];
+              this.setTokan(response) 
               // let All = response[""];
              console.log("Rana Response",JSON.stringify(Message));
               this.setState({
