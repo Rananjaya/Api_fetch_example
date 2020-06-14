@@ -37,6 +37,7 @@ export default class AgendaPage extends Component {
             data:[],
             loading:false,
             tracks:"",
+            concat_url1:"",
         }
    }
 
@@ -64,6 +65,16 @@ export default class AgendaPage extends Component {
                 let userEmail = await AsyncStorage.getItem('ImageUrl');
 
                 console.log("from local stroage",userEmail);
+
+                let first = 'www.abc.com/app=';
+                let Second = this.state.data[0]["thumbnailUrl"];
+                let concat = `${first}${Second}`;
+
+                this.setState({
+                concat_url1 :concat
+          })
+
+                console.log("concat url",this.state.concat_url1)
 
 
         }catch(error){
@@ -96,8 +107,19 @@ export default class AgendaPage extends Component {
                 tracks: Message,
                 loading: true
         })
-                console.log("State",this.state.data[0]["thumbnailUrl"]);
+
+            // let Image_url = "http://mxzoom.ddns.net:3255/control/event.jpg?searchbytime_start=";
+            // let timestamp = this.state.data[0]['timestamp'];
+
+                console.log(timestamp);
+                 
+                console.log("State",this.state.data[0]['timestamp']);
+                console.log("State for 2nd",this.state.data[1]['timestamp']);
+                console.log("State",this.state.data[2]['timestamp']);
+                console.log("State",this.state.data[3]['timestamp']);
                 console.log("Singale Image",this.state.tracks);
+
+                
       
               // this._getTablesFromApi();
             }
@@ -140,6 +162,12 @@ export default class AgendaPage extends Component {
     render() {   
         return (
             <View style={{flex:1}}>
+    
+              <View>
+              {/* <Image source={{uri: 'http://mxzoom.ddns.net:3255/control/event.jpg?searchbytime_start=${this.state.data[0]}'}}    style={{width: 100, height: 100}}  /> */}
+              <Image source={{uri: 'http://mxzoom.ddns.net:3255/control/event.jpg?searchbytime_start='+this.state.data[1]}}    style={{width: 100, height: 100}}  />
+              <Image source={{uri: 'http://mxzoom.ddns.net:3255/control/event.jpg?searchbytime_start='+this.state.data[5]}}    style={{width: 100, height: 100}}  />
+              </View>
             {this.state.loading == false &&
             <View>
             <ActivityIndicator size="small" color="#00ff00" />
@@ -148,7 +176,7 @@ export default class AgendaPage extends Component {
                 }
                 {this.state.loading == true &&
             <View>
-
+<Text>{this.state.concat_url1}</Text>
               <Text>123</Text>
               <TouchableOpacity onPress={ () => this.props.navigation.navigate('Second_Page') }>
                 <Text>1234</Text>
