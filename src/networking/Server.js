@@ -1,10 +1,10 @@
 import { Alert } from 'react-native';
 
 // const url = 'http://waveapp.eastus.cloudapp.azure.com:8282/api/';
-const url = 'https://jsonplaceholder.typicode.com/photos/';
+// const url = 'https://jsonplaceholder.typicode.com/photos/';
 //const url = 'https://jsonplaceholder.typicode.com/todos/1';
 // const _api_key ='f34aa39bb6414849b24c0c270e05e60c';
-// const url = 'http://mxzoom.ddns.net:3255/control/event.jpg?output=alarmlist';
+const url = 'http://mxzoom.ddns.net:3255/control/event.jpg?output=alarmlist';
 
 async function getDataFromServer(reqAPI) {
     let apiGetdata = url.concat(reqAPI)
@@ -21,6 +21,11 @@ async function getDataFromServer(reqAPI) {
             }
         })
         let responseJson = await response.json()
+
+        // if(responseJson =""){
+        //    console.log("emtry")
+        // }
+
         console.log('Ranaaaaaaaaaaaa ......>>>>>>>>>>>>>>>', responseJson)
         return responseJson
     } catch (error) {

@@ -54,24 +54,30 @@ export default class AgendaPage extends Component {
      
         console.log("alert",JSON.stringify(response)) 
         try{
-                let Imgurl = response[0]["thumbnailUrl"]
+                // let Imgurl = response[5]["timestamp"]
 
-                console.log("ImgURL",response[0]["thumbnailUrl"]);
+                // console.log("ImgURL",response[5]["timestamp"]);
 
-                await AsyncStorage.multiSet([['ImageUrl', Imgurl]])
+                //await AsyncStorage.multiSet([['http://mxzoom.ddns.net:3255/control/event.jpg?searchbytime_start=', Imgurl]])
 
                 // get data from  local stroge
 
-                let userEmail = await AsyncStorage.getItem('ImageUrl');
+                // let myImge = await AsyncStorage.getItem('ImageUrl');
 
-                console.log("from local stroage",userEmail);
+                // console.log("from local stroage",myImge);
 
-                let first = 'www.abc.com/app=';
-                let Second = this.state.data[0]["thumbnailUrl"];
-                let concat = `${first}${Second}`;
+                let first = 'http://mxzoom.ddns.net:3255/control/event.jpg?searchbytime_start=';
+                let Second = response[2]["timestamp"];
+                let concat1 = `${first}${Second}`;
+         
+                 await AsyncStorage.multiSet([['concat1', concat1]])
+                 let myImge = await AsyncStorage.getItem('concat1');
+
+                 console.log("from local stroage",myImge);
+
 
                 this.setState({
-                concat_url1 :concat
+                concat_url1 :myImge
           })
 
                 console.log("concat url",this.state.concat_url1)
@@ -91,14 +97,24 @@ export default class AgendaPage extends Component {
         //   })
 
           getDataFromServer('').then(response => {
-            console.log('response--->', response)
+            // console.log('response--->', response)
+
+            var stringify = JSON.stringify(response)
+            var parsed = JSON.parse(stringify)
+// check the response is emty
+            // if(stringify != ""){
+            //    console.log("empety")
+            // }
+
+            console.log("rana response2",stringify)
+            console.log("Parsed",parsed)
             // Alert.alert("api_asia", response);
             if (response === 404) {
     
               Alert.alert("api_asia", "Connection Error", "error");
-            } else {
+            } else if(stringify != "") {
               // let Status = response["Error"];
-              let Message = response[0]["thumbnailUrl"];
+              let Message = response[0]["timestamp"];
               this.setTokan(response) 
               // let All = response[""];
              console.log("Rana Response",JSON.stringify(Message));
@@ -111,17 +127,21 @@ export default class AgendaPage extends Component {
             // let Image_url = "http://mxzoom.ddns.net:3255/control/event.jpg?searchbytime_start=";
             // let timestamp = this.state.data[0]['timestamp'];
 
-                console.log(timestamp);
+                console.log("New data" , this.state.data);
                  
                 console.log("State",this.state.data[0]['timestamp']);
                 console.log("State for 2nd",this.state.data[1]['timestamp']);
-                console.log("State",this.state.data[2]['timestamp']);
-                console.log("State",this.state.data[3]['timestamp']);
+                console.log("State 3",this.state.data[2]['timestamp']);
+                console.log("State 4",this.state.data[3]['timestamp']);
                 console.log("Singale Image",this.state.tracks);
+                // console.log("new concat", this.state.concat_url1);
 
                 
       
               // this._getTablesFromApi();
+            }
+            else{
+              console.log("all are empty")
             }
           });
       
@@ -164,9 +184,9 @@ export default class AgendaPage extends Component {
             <View style={{flex:1}}>
     
               <View>
-              {/* <Image source={{uri: 'http://mxzoom.ddns.net:3255/control/event.jpg?searchbytime_start=${this.state.data[0]}'}}    style={{width: 100, height: 100}}  /> */}
-              <Image source={{uri: 'http://mxzoom.ddns.net:3255/control/event.jpg?searchbytime_start='+this.state.data[1]}}    style={{width: 100, height: 100}}  />
-              <Image source={{uri: 'http://mxzoom.ddns.net:3255/control/event.jpg?searchbytime_start='+this.state.data[5]}}    style={{width: 100, height: 100}}  />
+              {/* <Image source={{uri: 'http://mxzoom.ddns.net:3255/control/event.jpg?searchbytime_start=${this.state.data[0]["timestamp"]}'}}    style={{width: 100, height: 100}}  /> */}
+              <Image source={{uri : this.state.concat_url1}}    style={{width: 100, height: 100}}  />
+             
               </View>
             {this.state.loading == false &&
             <View>
